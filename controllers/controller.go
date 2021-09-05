@@ -24,19 +24,25 @@ type pagination struct{
 }
 
 func (p *pagination) paginate() *pagingResult{
+
+	// Get limit
 	page, _ := strconv.Atoi(p.ctx.DefaultQuery("page","1"))
 	limit, _ := strconv.Atoi(p.ctx.DefaultQuery("limit","12"))
 
 
+	// Count records
 	ch := make(chan int)
 	go p.countRecords(ch)
 
+	// Find Record
 	offset := (page - 1) * limit
 	p.query.Limit(limit).Offset(offset).Find(p.records)
 	
+	// Total page
 	count := <- ch
 	totalPage := int(math.Ceil(float64(count) / float64(limit)))
 
+	// Find nextPage
 	var nextPage int
 	if page == totalPage {
 		nextPage = totalPage
@@ -44,6 +50,7 @@ func (p *pagination) paginate() *pagingResult{
 		nextPage = page - 1
 	}
 
+	// Result
 	return &pagingResult{
 		Page: page,
 		Limit: limit,
