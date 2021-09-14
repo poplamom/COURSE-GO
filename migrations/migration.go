@@ -18,6 +18,14 @@ m := gormigrate.New(
 		m1620158400AddCategoryIDToArticles(),
 		m1620165273CreateUsersTable(),
 		m1620169040AddUserIDToArticles(),
+		m1631654757CreateCourseTable(),
+		m1631655336CreateTaskTable(),
+		m1631655506CreateQuestionTable(),
+		m1631655688CreateUserCourseTable(),
+		m1631656197AddUserIDToUserCourses(),
+		m1631656721AddCourseIDToUserCourses(),
+		m1631656943AddTaskIDToCourses(),
+		m1631657068AddQuestionIDToTasks(),
 	},
 )
 

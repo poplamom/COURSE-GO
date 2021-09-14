@@ -7,14 +7,14 @@ import (
 	"gopkg.in/gormigrate.v1"
 )
 
-func m1620169040AddUserIDToArticles() *gormigrate.Migration {
+func m1631657068AddQuestionIDToTasks() *gormigrate.Migration {
 	return &gormigrate.Migration{
-		ID: "1620169040",
+		ID: "1631657068",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.AutoMigrate(&models.Article{}).Error
+			return tx.AutoMigrate(&models.Task{}).Error
 		},
 		Rollback: func(tx *gorm.DB) error {
-			return tx.Model(&models.Article{}).DropColumn("user_id").Error
+			return tx.Model(&models.Task{}).DropColumn("question_id").Error
 		},
 	}
 }

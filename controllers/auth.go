@@ -15,6 +15,7 @@ type Auth struct {
 }
 
 type authForm struct {
+	Name string `json:"name" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8"`
 }
@@ -28,6 +29,7 @@ type updateProfileForm struct {
 type authResponse struct {
 	ID    uint   `json:"id"`
 	Email string `json:"email"`
+	Name string `json:"name"`
 }
 
 // /auth/profile => JWT => sub (UserID) => User => User
@@ -60,6 +62,7 @@ func (a *Auth) Signup(ctx *gin.Context) {
 	copier.Copy(&serializedUser, &user)
 	ctx.JSON(http.StatusCreated, gin.H{"user": serializedUser})
 }
+
 
 func (a *Auth) UpdateProfile(ctx *gin.Context) {
 	var form updateProfileForm

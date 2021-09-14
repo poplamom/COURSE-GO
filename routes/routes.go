@@ -6,6 +6,8 @@ import (
 	"course-go/middleware"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 func Serve(r *gin.Engine){
@@ -57,6 +59,18 @@ func Serve(r *gin.Engine){
 		categoriesGroup.DELETE("/:id", CategoryController.Delete)
 		categoriesGroup.POST("" ,CategoryController.Create)
 	}
+	
+
+	CourseController := controllers.Courses{DB: db}
+	coursesGroup := v1.Group("/courses")
+	coursesGroup.GET("", CourseController.FindAll)
+	coursesGroup.GET("/:id", CourseController.FindOne)
+	coursesGroup.Use(authenticate, authorize)
+	{
+		coursesGroup.PATCH("/:id", CourseController.Update)
+		coursesGroup.DELETE("/:id", CourseController.Delete)
+		coursesGroup.POST("" ,CourseController.Create)
+	}
 
 	dockersGroup := v1.Group("/containers")
 	dockerController := controllers.Dockers{}
@@ -64,6 +78,11 @@ func Serve(r *gin.Engine){
 		dockersGroup.GET("", dockerController.ListAll)
 		dockersGroup.GET("/stop/:id", dockerController.StopContainer)
 		dockersGroup.GET("/start/:id", dockerController.StartContainer)
+	}
+
+	{
+		url := ginSwagger.URL("http://localhost:5200/swagger/doc.json") // The url pointing to API definition
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
 	
 
