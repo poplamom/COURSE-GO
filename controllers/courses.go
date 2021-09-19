@@ -14,11 +14,13 @@ type Courses struct {
 }
 
 type courseResponse struct {
+	ID         uint   `json:"id"`
 	Name     string `json:"name"`
 	Desc     string `json:"desc"`
 }
 
 type allCourseResponse struct {
+	ID         uint   `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }
