@@ -65,11 +65,33 @@ func Serve(r *gin.Engine){
 	coursesGroup := v1.Group("/courses")
 	coursesGroup.GET("", CourseController.FindAll)
 	coursesGroup.GET("/:id", CourseController.FindOne)
-	coursesGroup.Use(authenticate, authorize)
+	// coursesGroup.Use(authenticate, authorize)
 	{
 		coursesGroup.PATCH("/:id", CourseController.Update)
 		coursesGroup.DELETE("/:id", CourseController.Delete)
 		coursesGroup.POST("" ,CourseController.Create)
+	}
+
+	TaskController := controllers.Tasks{DB: db}
+	tasksGroup := v1.Group("/tasks")
+	tasksGroup.GET("", TaskController.FindAll)
+	tasksGroup.GET("/:id", TaskController.FindOne)
+	// tasksGroup.Use(authenticate, authorize)
+	{
+		tasksGroup.PATCH("/:id", TaskController.Update)
+		tasksGroup.DELETE("/:id", TaskController.Delete)
+		tasksGroup.POST("" ,TaskController.Create)
+	}
+	
+	QuestionController := controllers.Questions{DB: db}
+	questionsGroup := v1.Group("/questions")
+	questionsGroup.GET("", QuestionController.FindAll)
+	questionsGroup.GET("/:id", QuestionController.FindOne)
+	// questionsGroup.Use(authenticate, authorize)
+	{
+		questionsGroup.PATCH("/:id", QuestionController.Update)
+		questionsGroup.DELETE("/:id", QuestionController.Delete)
+		questionsGroup.POST("" ,QuestionController.Create)
 	}
 
 	dockersGroup := v1.Group("/containers")

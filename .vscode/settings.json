@@ -21,5 +21,6 @@
     // If true, enable additional analyses with staticcheck.
     // Warning: This will significantly increase memory usage.
     "staticcheck": false
-  }
+  },
+  "go.inferGopath": false
 }

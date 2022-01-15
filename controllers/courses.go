@@ -17,7 +17,28 @@ type courseResponse struct {
 	ID         uint   `json:"id"`
 	Name     string `json:"name"`
 	Desc     string `json:"desc"`
+	Task []struct {
+		ID       	uint   `json:"id"`
+		Name     	string `json:"name"`
+		Desc     	string `json:"desc"`
+		Objective 	string `json:"objective"`
+		Status 		string `json:"status"`
+		// Question []struct{
+		// 	ID			uint	`json:"id"`
+		// 	Name		string	`json:"name"`
+		// 	Answer		string	`json:"answer"`
+		// 	Hint		string	`json:"hint"`
+		// 	Status 		string
+		// }
+	} `json:"tasks"`
 }
+
+type courseCreateResponse struct {
+	ID         uint   `json:"id"`
+	Name     string `json:"name"`
+	Desc     string `json:"desc"`
+}
+
 
 type allCourseResponse struct {
 	ID         uint   `json:"id"`
@@ -70,7 +91,7 @@ func (c *Courses) Create(ctx *gin.Context) {
 		return
 	}
 
-	var serializedCourse courseResponse
+	var serializedCourse courseCreateResponse
 	copier.Copy(&serializedCourse, &course)
 	ctx.JSON(http.StatusCreated, gin.H{"course": serializedCourse})
 }
@@ -109,17 +130,14 @@ func (c *Courses) Delete(ctx *gin.Context) {
 	ctx.Status(http.StatusNoContent)
 }
 
-func (c *Courses) findCourseByID(ctx *gin.Context) (*models.Course, error) {
+func (c *Courses) findCourseByID(ctx *gin.Context) (*models.Course, error)  {
 	var course models.Course
 	id := ctx.Param("id")
 
-	// if err := c.DB.Preload("Articles").First(&course, id).Error; err != nil {
-	// 	return nil, err
-	// }
-
-	if err := c.DB.First(&course, id).Error; err != nil {
+	if err := c.DB.Preload("Task").First(&course, id).Error; err != nil {
 		return nil, err
 	}
 
 	return &course, nil
 }
+

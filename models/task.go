@@ -7,6 +7,8 @@ type Task struct {
 	Name		string `gorm:"not null"`
 	Desc		string `gorm:"not null"`
 	Objective	string `gorm:"not null"`
-	Status 		int `gorm:"not null"`
-	QuestionID uint
+	Status 		string 
+	CourseID uint
+	Course   Course
+	Question []Question
 }

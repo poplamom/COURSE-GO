@@ -10,10 +10,10 @@ CMD ["/app/main"]
 # docker build -t goapi .
 # docker image ls
 # docker run --name goapi -p 5200:5200 goapi
-# docker tag goapi msitproject.azurecr.io/goapi:latest
+# docker tag goapi msitproject.azurecr.io/goapi:1.0.2
 # az login
 # az acr login --name msitproject
-# docker push msitproject.azurecr.io/goapi:latest
+# docker push msitproject.azurecr.io/goapi:1.0.2
 # az acr repository list -n msitproject
 # az webapp create --resource-group MSITPROJECT --plan MSITPROJECT --name msitapi --deployment-container-image-name msitproject.azurecr.io/goapi:latest
 # az webapp config appsettings set --resource-group MSITPROJECT --name msitapi --settings WEBSITES_PORT=5200

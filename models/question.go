@@ -7,5 +7,7 @@ type Question struct {
 	Name		string `gorm:"unique;not null"`
 	Answer		string `gorm:"unique;not null"`
 	Hint		string `gorm:"unique;not null"`
-	Status 		int `gorm:"unique;not null"`
+	Status 		string
+	TaskID		uint
+	Task 		Task
 }

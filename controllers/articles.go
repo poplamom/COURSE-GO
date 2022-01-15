@@ -170,6 +170,7 @@ func (a *Articles) findArticleByID(ctx *gin.Context) (*models.Article, error) {
 	id := ctx.Param("id")
 
 	if err := a.DB.Preload("User").Preload("Category").First(&article, id).Error; err != nil {
+	// if err := a.DB.Preload("Category").First(&article, id).Error; err != nil {
 		return nil, err
 	}
 
