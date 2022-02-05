@@ -15,7 +15,7 @@ func Load() {
 	db := config.GetDB()
 
 	// Clean Database
-	db.DropTableIfExists("users", "articles", "categories", "migrations")
+	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "migrations")
 	migrations.Migrate()
 
 	// Add Admin
@@ -88,6 +88,6 @@ func Load() {
 
 		db.Create(&article)
 		articles = append(articles, article)
-		
+
 	}
 }

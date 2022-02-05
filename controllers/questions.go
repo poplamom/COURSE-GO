@@ -14,49 +14,47 @@ type Questions struct {
 }
 
 type questionResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Answer     string `json:"answer"`
-	Hint string `json:"hint"`
-	Status string `json:"status"`
+	ID     uint   `json:"id"`
+	Name   string `json:"name"`
+	Answer string `json:"answer"`
+	Hint   string `json:"hint"`
 	TaskID uint   `json:"taskId"`
 	Task   struct {
-		ID   uint   `json:"id"`
-		Name string `json:"name"`
-		Desc string `json:"desc"`
+		ID        uint   `json:"id"`
+		Name      string `json:"name"`
+		Desc      string `json:"desc"`
 		Objective string `json:"objective"`
 	} `json:"task"`
 }
 
 type questionCreateResponse struct {
-	ID         	uint   `json:"id"`
-	Name     	string `json:"name"`
-	Answer     	string `json:"answer"`
-	Hint 		string `json:"hint"`
-	TaskID 		uint   `json:"taskId"`
+	ID     uint   `json:"id"`
+	Name   string `json:"name"`
+	Answer string `json:"answer"`
+	Hint   string `json:"hint"`
+	TaskID uint   `json:"taskId"`
 }
 
 type allQuestionResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Answer     string `json:"answer"`
-	Hint string `json:"hint"`
+	ID     uint   `json:"id"`
+	Name   string `json:"name"`
+	Answer string `json:"answer"`
+	Hint   string `json:"hint"`
 }
 
 type createQuestionForm struct {
-	Name string `form:"name" binding:"required"`
-	Desc string `form:"desc" binding:"required"`
-	Answer     string `form:"answer" binding:"required"`
-	Hint string `form:"hint" binding:"required"`
-	TaskID uint `form:"taskId" binding:"required"`
+	Name   string `form:"name" binding:"required"`
+	Answer string `form:"answer" binding:"required"`
+	Hint   string `form:"hint" binding:"required"`
+	TaskID uint   `form:"taskId" binding:"required"`
 }
 
 type updateQuestionForm struct {
-	Name string `form:"name"`
-	Desc string `form:"desc"`
-	Answer     string `form:"answer"`
-	Hint string `form:"hint"`
-	TaskID uint `form:"taskId"`
+	Name   string `form:"name"`
+	Desc   string `form:"desc"`
+	Answer string `form:"answer"`
+	Hint   string `form:"hint"`
+	TaskID uint   `form:"taskId"`
 }
 
 func (c *Questions) FindAll(ctx *gin.Context) {
@@ -83,14 +81,14 @@ func (c *Questions) FindOne(ctx *gin.Context) {
 func (c *Questions) Create(ctx *gin.Context) {
 	var form createQuestionForm
 	if err := ctx.ShouldBind(&form); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"errorx": err.Error()})
 		return
 	}
 
 	var question models.Question
 	copier.Copy(&question, &form)
 	if err := c.DB.Create(&question).Error; err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"errorz": err.Error()})
 		return
 	}
 

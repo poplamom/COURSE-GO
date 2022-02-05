@@ -4,10 +4,9 @@ import "github.com/jinzhu/gorm"
 
 type Question struct {
 	gorm.Model
-	Name		string `gorm:"unique;not null"`
-	Answer		string `gorm:"unique;not null"`
-	Hint		string `gorm:"unique;not null"`
-	Status 		string
-	TaskID		uint
-	Task 		Task
+	Name   string `gorm:"not null"`
+	Answer string `gorm:"not null"`
+	Hint   string `gorm:"not null"`
+	TaskID uint
+	Task   Task
 }

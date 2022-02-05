@@ -14,52 +14,51 @@ type Tasks struct {
 }
 
 type taskResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Desc     string `json:"desc"`
+	ID        uint   `json:"id"`
+	Name      string `json:"name"`
+	Desc      string `json:"desc"`
 	Objective string `json:"objective"`
-	Status string `json:"status"`
-	CourseID uint   `json:"courseId"`
-	Course   struct {
+	Status    string `json:"status"`
+	CourseID  uint   `json:"courseId"`
+	Course    struct {
 		ID   uint   `json:"id"`
 		Name string `json:"name"`
 		Desc string `json:"desc"`
 	} `json:"course"`
-	Question []struct{
-		ID			uint	`json:"id"`
-		Name		string	`json:"name"`
-		Answer		string	`json:"answer"`
-		Hint		string	`json:"hint"`
-		Status 		string
+	Question []struct {
+		ID     uint   `json:"id"`
+		Name   string `json:"name"`
+		Answer string `json:"answer"`
+		Hint   string `json:"hint"`
 	} `json:"question"`
 }
 
 type taskCreateResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Desc     string `json:"desc"`
+	ID        uint   `json:"id"`
+	Name      string `json:"name"`
+	Desc      string `json:"desc"`
 	Objective string `json:"objective"`
-	Status string `json:"status"`
+	Status    string `json:"status"`
 }
 
 type allTaskResponse struct {
-	ID         uint   `json:"id"`
+	ID   uint   `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }
 
 type createTaskForm struct {
-	Name string `form:"name" binding:"required"`
-	Desc string `form:"desc" binding:"required"`
+	Name      string `form:"name" binding:"required"`
+	Desc      string `form:"desc" binding:"required"`
 	Objective string `form:"objective" binding:"required"`
-	CourseID uint `form:"courseId" binding:"required"`
+	CourseID  uint   `form:"courseId" binding:"required"`
 }
 
 type updateTaskForm struct {
-	Name string `form:"name"`
-	Desc string `form:"desc"`
+	Name      string `form:"name"`
+	Desc      string `form:"desc"`
 	Objective string `form:"objective"`
-	Status string `form:"status"`
+	Status    string `form:"status"`
 }
 
 func (c *Tasks) FindAll(ctx *gin.Context) {
@@ -143,6 +142,6 @@ func (c *Tasks) findTaskByID(ctx *gin.Context) (*models.Task, error) {
 	if err := c.DB.Preload("Course").Preload("Question").First(&task, id).Error; err != nil {
 		return nil, err
 	}
-	
+
 	return &task, nil
 }
