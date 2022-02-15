@@ -7,4 +7,5 @@ type Course struct {
 	Name      	string `gorm:"unique;not null"`
 	Desc 		string `gorm:"not null"`
 	Task []Task
+	Progress []Progress
 }

@@ -15,7 +15,7 @@ type User struct {
 }
 
 func (u *User) Promote() {
-	u.Role = "Editor"
+	u.Role = "Admin"
 }
 
 func (u *User) Demote() {

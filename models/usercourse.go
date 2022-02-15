@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type UserCourse struct {
 	gorm.Model
-	UserID uint
+	UserID   uint
 	CourseID uint
-	Progress	int `gorm:"not null"`
+	Progress int `gorm:"not null"`
 }

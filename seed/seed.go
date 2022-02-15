@@ -15,7 +15,7 @@ func Load() {
 	db := config.GetDB()
 
 	// Clean Database
-	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "migrations")
+	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "progress", "progressdetail", "migrations")
 	migrations.Migrate()
 
 	// Add Admin
@@ -37,7 +37,7 @@ func Load() {
 
 	numOfUsers := 50
 	users := make([]models.User, 0, numOfUsers)
-	userRoles := [2]string{"Editor", "Member"}
+	userRoles := [2]string{"Admin", "Member"}
 
 	for i := 1; i <= numOfUsers; i++ {
 		user := models.User{
