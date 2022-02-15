@@ -10,5 +10,5 @@ type Task struct {
 	CourseID       uint
 	Course         Course
 	Question       []Question
-	Progressdetail []Progressdetail
+	ProgressDetail []ProgressDetail
 }

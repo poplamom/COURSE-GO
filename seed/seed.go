@@ -15,7 +15,7 @@ func Load() {
 	db := config.GetDB()
 
 	// Clean Database
-	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "progress", "progressdetail", "migrations")
+	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "progresses", "progressdetails", "migrations")
 	migrations.Migrate()
 
 	// Add Admin
