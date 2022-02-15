@@ -12,6 +12,7 @@ type User struct {
 	Name     string `gorm:"not null"`
 	Avatar   string
 	Role     string `gorm:"default:'Member'; not null"`
+	Progress []Progress
 }
 
 func (u *User) Promote() {

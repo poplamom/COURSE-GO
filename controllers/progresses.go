@@ -16,6 +16,7 @@ type Progresses struct {
 type progressResponse struct {
 	ID       uint `json:"id"`
 	CourseID uint `json:"courseId"`
+	UserID   uint `json:"userId"`
 	Course   struct {
 		ID   uint   `json:"id"`
 		Name string `json:"name"`
@@ -28,31 +29,36 @@ type progressResponse struct {
 }
 
 type progressCreateResponse struct {
-	ID       uint `json:"id"`
+	ID     uint `json:"id"`
+	UserID uint `json:"userId"`
+
 	CourseID uint `json:"courseId"`
 }
 
 type allProgressesResponse struct {
 	ID       uint `json:"id"`
+	UserID   uint `json:"userId"`
 	CourseID uint `json:"courseId"`
 }
 
 type createProgressesForm struct {
+	UserID   uint `form:"userId" binding:"required"`
 	CourseID uint `form:"courseId" binding:"required"`
 }
 
 type updateProgressesForm struct {
 	ID       uint `json:"id"`
+	UserID   uint `json:"userId"`
 	CourseID uint `json:"CourseID"`
 }
 
 func (c *Progresses) FindAll(ctx *gin.Context) {
 	var progresses []models.Progress
-	c.DB.Order("id desc").Find(&progresses)
+	c.DB.Order("id").Find(&progresses)
 
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
-	ctx.JSON(http.StatusOK, gin.H{"progresses": serializedProgresses})
+	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgresses})
 }
 
 func (c *Progresses) FindOne(ctx *gin.Context) {
