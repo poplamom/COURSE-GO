@@ -29,9 +29,8 @@ type progressResponse struct {
 }
 
 type progressCreateResponse struct {
-	ID     uint `json:"id"`
-	UserID uint `json:"userId"`
-
+	ID       uint `json:"id"`
+	UserID   uint `json:"userId"`
 	CourseID uint `json:"courseId"`
 }
 

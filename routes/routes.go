@@ -10,12 +10,12 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
-func Serve(r *gin.Engine){
+func Serve(r *gin.Engine) {
 	db := config.GetDB()
 	v1 := r.Group("/api/v1")
 	authenticate := middleware.Authenticate().MiddlewareFunc()
 	authorize := middleware.Authorize()
-	
+
 	authGroup := v1.Group("auth")
 	authController := controllers.Auth{DB: db}
 	{
@@ -37,7 +37,7 @@ func Serve(r *gin.Engine){
 		usersGroup.PATCH("/:id/promote", usersController.Promote)
 		usersGroup.PATCH("/:id/demote", usersController.Demote)
 	}
-	
+
 	articleController := controllers.Articles{DB: db}
 	articlesGroup := v1.Group("/articles")
 	articlesGroup.GET("", articleController.FindAll)
@@ -46,7 +46,7 @@ func Serve(r *gin.Engine){
 	{
 		articlesGroup.PATCH("/:id", articleController.Update)
 		articlesGroup.DELETE("/:id", articleController.Delete)
-		articlesGroup.POST("" ,authenticate,articleController.Create)
+		articlesGroup.POST("", authenticate, articleController.Create)
 	}
 
 	CategoryController := controllers.Categories{DB: db}
@@ -57,9 +57,18 @@ func Serve(r *gin.Engine){
 	{
 		categoriesGroup.PATCH("/:id", CategoryController.Update)
 		categoriesGroup.DELETE("/:id", CategoryController.Delete)
-		categoriesGroup.POST("" ,CategoryController.Create)
+		categoriesGroup.POST("", CategoryController.Create)
 	}
-	
+
+	ProgressController := controllers.Progresses{DB: db}
+	progressGroup := v1.Group("/progress")
+	progressGroup.GET("", ProgressController.FindAll)
+	progressGroup.GET("/:id", ProgressController.FindOne)
+	// coursesGroup.Use(authenticate, authorize)
+
+	{
+		progressGroup.POST("", ProgressController.Create)
+	}
 
 	CourseController := controllers.Courses{DB: db}
 	coursesGroup := v1.Group("/courses")
@@ -69,7 +78,7 @@ func Serve(r *gin.Engine){
 	{
 		coursesGroup.PATCH("/:id", CourseController.Update)
 		coursesGroup.DELETE("/:id", CourseController.Delete)
-		coursesGroup.POST("" ,CourseController.Create)
+		coursesGroup.POST("", CourseController.Create)
 	}
 
 	TaskController := controllers.Tasks{DB: db}
@@ -80,9 +89,9 @@ func Serve(r *gin.Engine){
 	{
 		tasksGroup.PATCH("/:id", TaskController.Update)
 		tasksGroup.DELETE("/:id", TaskController.Delete)
-		tasksGroup.POST("" ,TaskController.Create)
+		tasksGroup.POST("", TaskController.Create)
 	}
-	
+
 	QuestionController := controllers.Questions{DB: db}
 	questionsGroup := v1.Group("/questions")
 	questionsGroup.GET("", QuestionController.FindAll)
@@ -91,7 +100,7 @@ func Serve(r *gin.Engine){
 	{
 		questionsGroup.PATCH("/:id", QuestionController.Update)
 		questionsGroup.DELETE("/:id", QuestionController.Delete)
-		questionsGroup.POST("" ,QuestionController.Create)
+		questionsGroup.POST("", QuestionController.Create)
 	}
 
 	dockersGroup := v1.Group("/containers")
@@ -106,7 +115,5 @@ func Serve(r *gin.Engine){
 		url := ginSwagger.URL("http://localhost:5200/swagger/doc.json") // The url pointing to API definition
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
-	
-
 
 }
