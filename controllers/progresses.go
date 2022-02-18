@@ -48,12 +48,12 @@ type createProgressesForm struct {
 type updateProgressesForm struct {
 	ID       uint `json:"id"`
 	UserID   uint `json:"userId"`
-	CourseID uint `json:"CourseID"`
+	CourseID uint `json:"courseId"`
 }
 
 func (c *Progresses) FindAll(ctx *gin.Context) {
 	var progresses []models.Progress
-	c.DB.Order("id").Find(&progresses)
+	c.DB.Order("course_id desc").Find(&progresses)
 
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
