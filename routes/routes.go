@@ -63,7 +63,8 @@ func Serve(r *gin.Engine) {
 	ProgressController := controllers.Progresses{DB: db}
 	progressGroup := v1.Group("/progress")
 	progressGroup.GET("", ProgressController.FindAll)
-	progressGroup.GET("/:id", ProgressController.FindOne)
+	progressGroup.GET("/:id", ProgressController.FindOneuser)	
+
 	// coursesGroup.Use(authenticate, authorize)
 
 	{

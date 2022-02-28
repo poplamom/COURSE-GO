@@ -72,6 +72,18 @@ func (c *Progresses) FindOne(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgress})
 }
 
+func (c *Progresses) FindOneuser(ctx *gin.Context){
+
+	var progresses []models.Progress
+	id := ctx.Param("user_id")
+
+	c.DB.Order("course_id desc").Find(&progresses,id)
+
+	var serializedProgresses []allProgressesResponse
+	copier.Copy(&serializedProgresses, &progresses)
+	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgresses})
+}
+
 func (c *Progresses) Create(ctx *gin.Context) {
 	var form createProgressesForm
 	if err := ctx.ShouldBindJSON(&form); err != nil {
