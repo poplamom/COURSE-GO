@@ -67,17 +67,17 @@ func (c *Progresses) FindOne(ctx *gin.Context) {
 		return
 	}
 
-	var serializedProgress progressResponse
+	var serializedProgress allProgressesResponse
 	copier.Copy(&serializedProgress, &progress)
 	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgress})
 }
 
-func (c *Progresses) FindOneuser(ctx *gin.Context){
+func (c *Progresses) FindOneuser(ctx *gin.Context) {
 
 	var progresses []models.Progress
-	id := ctx.Param("user_id")
-
-	c.DB.Order("course_id desc").Find(&progresses,id)
+	user_id := ctx.Param("id")
+	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
+	c.DB.Order("course_id desc").Find(&progresses, "user_id = ?", user_id)
 
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
@@ -136,12 +136,11 @@ func (c *Progresses) Delete(ctx *gin.Context) {
 	c.DB.Unscoped().Delete(&progress)
 	ctx.Status(http.StatusNoContent)
 }
-
 func (c *Progresses) findProgressByID(ctx *gin.Context) (*models.Progress, error) {
 	var progress models.Progress
 	id := ctx.Param("id")
 
-	if err := c.DB.Preload("progress").First(&progress, id).Error; err != nil {
+	if err := c.DB.First(&progress, id).Error; err != nil {
 		return nil, err
 	}
 

@@ -61,25 +61,14 @@ func Serve(r *gin.Engine) {
 	}
 
 	ProgressController := controllers.Progresses{DB: db}
-	progressGroup := v1.Group("/progress")
-	progressGroup.GET("", ProgressController.FindAll)
-	progressGroup.GET("/:id", ProgressController.FindOneuser)	
+	progressGroup := v1.Group("/progresses")
+	// progressGroup.GET("", ProgressController.FindAll)
+	progressGroup.GET("/:id", ProgressController.FindOneuser)
 
 	// coursesGroup.Use(authenticate, authorize)
 
 	{
 		progressGroup.POST("", ProgressController.Create)
-	}
-
-	CourseController := controllers.Courses{DB: db}
-	coursesGroup := v1.Group("/courses")
-	coursesGroup.GET("", CourseController.FindAll)
-	coursesGroup.GET("/:id", CourseController.FindOne)
-	// coursesGroup.Use(authenticate, authorize)
-	{
-		coursesGroup.PATCH("/:id", CourseController.Update)
-		coursesGroup.DELETE("/:id", CourseController.Delete)
-		coursesGroup.POST("", CourseController.Create)
 	}
 
 	TaskController := controllers.Tasks{DB: db}
@@ -91,6 +80,17 @@ func Serve(r *gin.Engine) {
 		tasksGroup.PATCH("/:id", TaskController.Update)
 		tasksGroup.DELETE("/:id", TaskController.Delete)
 		tasksGroup.POST("", TaskController.Create)
+	}
+
+	CourseController := controllers.Courses{DB: db}
+	coursesGroup := v1.Group("/courses")
+	coursesGroup.GET("", CourseController.FindAll)
+	coursesGroup.GET("/:id", CourseController.FindOne)
+	// coursesGroup.Use(authenticate, authorize)
+	{
+		coursesGroup.PATCH("/:id", CourseController.Update)
+		coursesGroup.DELETE("/:id", CourseController.Delete)
+		coursesGroup.POST("", CourseController.Create)
 	}
 
 	QuestionController := controllers.Questions{DB: db}
