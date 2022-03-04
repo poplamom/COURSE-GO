@@ -34,6 +34,10 @@ type questionCreateResponse struct {
 	Hint   string `json:"hint"`
 	TaskID uint   `json:"taskId"`
 }
+type questionCheckResponse struct {
+	ID     uint   `json:"id"`
+	Status string `json:"status"`
+}
 
 type allQuestionResponse struct {
 	ID     uint   `json:"id"`
@@ -76,6 +80,21 @@ func (c *Questions) FindOne(ctx *gin.Context) {
 	var serializedQuestion questionResponse
 	copier.Copy(&serializedQuestion, &question)
 	ctx.JSON(http.StatusOK, gin.H{"question": serializedQuestion})
+}
+
+func (c *Questions) CheckAns(ctx *gin.Context) {
+	var question models.Question
+	question_id := ctx.PostForm("id")
+	answer := ctx.PostForm("answer")
+
+	err := c.DB.Find(&question, "id = ? AND answer = ?", question_id, answer).Error
+
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"question": "no"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"question": "yes"})
+
 }
 
 func (c *Questions) Create(ctx *gin.Context) {

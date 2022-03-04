@@ -82,7 +82,7 @@ func (c *Progresses) FindOneuser(ctx *gin.Context) {
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
 	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgresses})
-}
+}	
 
 func (c *Progresses) Create(ctx *gin.Context) {
 	var form createProgressesForm

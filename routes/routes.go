@@ -97,6 +97,8 @@ func Serve(r *gin.Engine) {
 	questionsGroup := v1.Group("/questions")
 	questionsGroup.GET("", QuestionController.FindAll)
 	questionsGroup.GET("/:id", QuestionController.FindOne)
+	questionsGroup.POST("/CheckAns", QuestionController.CheckAns)
+
 	// questionsGroup.Use(authenticate, authorize)
 	{
 		questionsGroup.PATCH("/:id", QuestionController.Update)
