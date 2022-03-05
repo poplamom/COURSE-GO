@@ -13,6 +13,10 @@ type Questions struct {
 	DB *gorm.DB
 }
 
+type QuestionAnser struct {
+	ID     uint   `json:"id"`
+	Answer string `json:"answer"`
+}
 type questionResponse struct {
 	ID     uint   `json:"id"`
 	Name   string `json:"name"`
@@ -84,10 +88,14 @@ func (c *Questions) FindOne(ctx *gin.Context) {
 
 func (c *Questions) CheckAns(ctx *gin.Context) {
 	var question models.Question
-	question_id := ctx.PostForm("id")
-	answer := ctx.PostForm("answer")
+	var requestBody QuestionAnser
+	if err := ctx.BindJSON(&requestBody); err != nil {
+		// DO SOMETHING WITH THE ERROR
+	}
+	// question_id := ctx.PostForm("id")
+	ctx.JSON(http.StatusOK, gin.H{"question": requestBody.Answer})
 
-	err := c.DB.Find(&question, "id = ? AND answer = ?", question_id, answer).Error
+	err := c.DB.Find(&question, "id = ? AND answer = ?", requestBody.ID, requestBody.Answer).Error
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"question": "no"})
