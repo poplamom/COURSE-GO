@@ -7,9 +7,9 @@ import (
 	"gopkg.in/gormigrate.v1"
 )
 
-func m1631657070CreateProgressDetailTable() *gormigrate.Migration {
+func m1631657071CreateProgressDetailTable() *gormigrate.Migration {
 	return &gormigrate.Migration{
-		ID: "1631657070",
+		ID: "1631657071",
 		Migrate: func(tx *gorm.DB) error {
 			return tx.AutoMigrate(&models.ProgressDetail{}).Error
 		},

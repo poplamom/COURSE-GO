@@ -22,10 +22,6 @@ type progressResponse struct {
 		Name string `json:"name"`
 		Desc string `json:"desc"`
 	} `json:"course"`
-	Progressdetaile []struct {
-		ID     uint `json:"id"`
-		TaskID uint `json:"taskId"`
-	} `json:"progressdetail"`
 }
 
 type progressCreateResponse struct {
@@ -82,7 +78,7 @@ func (c *Progresses) FindOneuser(ctx *gin.Context) {
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
 	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgresses})
-}	
+}
 
 func (c *Progresses) Create(ctx *gin.Context) {
 	var form createProgressesForm

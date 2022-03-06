@@ -4,10 +4,10 @@ import "github.com/jinzhu/gorm"
 
 type ProgressDetail struct {
 	gorm.Model
-	ProgressID uint
 	TaskID     uint
 	QuestionID uint
+	UserID     uint
 	Task       Task
-	Progress   Progress
 	Question   Question
+	User       User
 }

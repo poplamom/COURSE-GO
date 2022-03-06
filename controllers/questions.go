@@ -12,6 +12,10 @@ import (
 type Questions struct {
 	DB *gorm.DB
 }
+type ProgressDetailses struct {
+	DB *gorm.DB
+}
+
 
 type QuestionAnser struct {
 	ID     uint   `json:"id"`
@@ -63,6 +67,12 @@ type updateQuestionForm struct {
 	Answer string `form:"answer"`
 	Hint   string `form:"hint"`
 	TaskID uint   `form:"taskId"`
+}
+
+type progressDetailForm struct {
+	UserID     uint `form:"userId" binding:"required"`
+	TaskID     uint `form:"taskId" binding:"required"`
+	QuestionID uint `form:"questionId" binding:"required"`
 }
 
 func (c *Questions) FindAll(ctx *gin.Context) {

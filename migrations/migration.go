@@ -23,7 +23,7 @@ func Migrate() {
 			m1631655506CreateQuestionTable(),
 			m1631655688CreateUserCourseTable(),
 			m1631657069CreateProgressTable(),
-			m1631657070CreateProgressDetailTable(),
+			m1631657071CreateProgressDetailTable(),
 			// m1631656197AddUserIDToUserCourses(),
 			// m1631656721AddCourseIDToUserCourses(),
 			// m1631656943AddTaskIDToCourses(),

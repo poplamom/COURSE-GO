@@ -7,12 +7,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Email    string `gorm:"unique_index; not null"`
-	Password string `gorm:"not null"`
-	Name     string `gorm:"not null"`
-	Avatar   string
-	Role     string `gorm:"default:'Member'; not null"`
-	Progress []Progress
+	Email          string `gorm:"unique_index; not null"`
+	Password       string `gorm:"not null"`
+	Name           string `gorm:"not null"`
+	Avatar         string
+	Role           string `gorm:"default:'Member'; not null"`
+	Progress       []Progress
+	ProgressDetail []ProgressDetail
 }
 
 func (u *User) Promote() {

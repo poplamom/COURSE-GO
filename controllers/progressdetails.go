@@ -39,13 +39,6 @@ type allProgressDetailResponse struct {
 	Desc string `json:"desc"`
 }
 
-type progressDetailForm struct {
-	TaskID   uint `form:"courseId" binding:"required"`
-	CourseID uint `form:"courseId" binding:"required"`
-
-	Name string `json:"name" binding:"required"`
-	Desc string `json:"desc" binding:"required"`
-}
 
 type updateProgressDetailForm struct {
 	Name string `json:"name"`

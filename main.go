@@ -5,6 +5,7 @@ import (
 	"course-go/docs"
 	"course-go/migrations"
 	"course-go/routes"
+	"course-go/seed"
 	"log"
 	"os"
 
@@ -84,7 +85,7 @@ func main() {
 	config.InitDB()
 	defer config.CloseDB()
 	migrations.Migrate()
-	// seed.Load()
+	seed.Load()
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AddAllowHeaders("Authorization")
