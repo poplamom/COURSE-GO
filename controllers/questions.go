@@ -4,9 +4,10 @@ import (
 	"course-go/models"
 	"net/http"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
-	"github.com/jinzhu/gorm"
 )
 
 type Questions struct {
@@ -15,11 +16,22 @@ type Questions struct {
 type ProgressDetailses struct {
 	DB *gorm.DB
 }
-
+type ProgressDetail struct {
+	TaskID     uint
+	QuestionID uint
+	UserID     uint
+}
 
 type QuestionAnser struct {
 	ID     uint   `json:"id"`
 	Answer string `json:"answer"`
+	TaskID uint   `json:"taskId"`
+	UserID uint   `json:"userId"`
+}
+type ProgressDetaialCreate struct {
+	TaskID     uint `json:"takId"`
+	QuestionID uint `json:"questionId"`
+	UserID     uint `json:"userId"`
 }
 type questionResponse struct {
 	ID     uint   `json:"id"`
@@ -74,6 +86,11 @@ type progressDetailForm struct {
 	TaskID     uint `form:"taskId" binding:"required"`
 	QuestionID uint `form:"questionId" binding:"required"`
 }
+type User struct {
+	ID   int64
+	Name string
+	Age  byte
+}
 
 func (c *Questions) FindAll(ctx *gin.Context) {
 	var questions []models.Question
@@ -98,12 +115,13 @@ func (c *Questions) FindOne(ctx *gin.Context) {
 
 func (c *Questions) CheckAns(ctx *gin.Context) {
 	var question models.Question
+	// var progressdetail models.ProgressDetail
+
 	var requestBody QuestionAnser
 	if err := ctx.BindJSON(&requestBody); err != nil {
 		// DO SOMETHING WITH THE ERROR
 	}
 	// question_id := ctx.PostForm("id")
-	ctx.JSON(http.StatusOK, gin.H{"question": requestBody.Answer})
 
 	err := c.DB.Find(&question, "id = ? AND answer = ?", requestBody.ID, requestBody.Answer).Error
 
@@ -111,8 +129,27 @@ func (c *Questions) CheckAns(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"question": "no"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"question": "yes"})
 
+	progessDetailTables := ProgressDetail{TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
+	if err := c.DB.Create(&progessDetailTables).Error; err != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"question": "yes"})
+}
+
+func (cc *ProgressDetailses) createProgressDetail(ctx *gin.Context) {
+	var requestBody QuestionAnser
+	if err := ctx.BindJSON(&requestBody); err != nil {
+		// DO SOMETHING WITH THE ERROR
+	}
+	progressdetail := ProgressDetail{TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
+	if err := cc.DB.Create(&progressdetail).Error; err != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	return
 }
 
 func (c *Questions) Create(ctx *gin.Context) {
