@@ -65,7 +65,11 @@ type allQuestionResponse struct {
 	Answer string `json:"answer"`
 	Hint   string `json:"hint"`
 }
-
+type allQuestionName struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+	Hint string `json:"hint"`
+}
 type createQuestionForm struct {
 	Name   string `form:"name" binding:"required"`
 	Answer string `form:"answer" binding:"required"`
@@ -99,6 +103,14 @@ func (c *Questions) FindAll(ctx *gin.Context) {
 	var serializedQuestion []allQuestionResponse
 	copier.Copy(&serializedQuestion, &questions)
 	ctx.JSON(http.StatusOK, gin.H{"questions": serializedQuestion})
+}
+func (c *Questions) FindAllName(ctx *gin.Context) {
+	var questions []models.Question
+	c.DB.Order("id desc").Find(&questions)
+
+	var serializedQuestion []allQuestionName
+	copier.Copy(&serializedQuestion, &questions)
+	ctx.JSON(http.StatusOK, gin.H{"question": serializedQuestion})
 }
 
 func (c *Questions) FindOne(ctx *gin.Context) {

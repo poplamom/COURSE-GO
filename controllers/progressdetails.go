@@ -16,15 +16,7 @@ type ProgressDetails struct {
 type progressDetailResponse struct {
 	ID     uint   `json:"id"`
 	Name   string `json:"name"`
-	Answer string `json:"answer"`
-	Hint   string `json:"hint"`
 	TaskID uint   `json:"taskId"`
-	Task   struct {
-		ID        uint   `json:"id"`
-		Name      string `json:"name"`
-		Desc      string `json:"desc"`
-		Objective string `json:"objective"`
-	} `json:"task"`
 }
 
 type progressDetailCreateResponse struct {
@@ -34,11 +26,11 @@ type progressDetailCreateResponse struct {
 }
 
 type allProgressDetailResponse struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-	Desc string `json:"desc"`
+	ID         uint `json:"id"`
+	TaskID     uint `json:"taskId"`
+	QuestionID uint `json:"questionId"`
+	UserID     uint `json:"userId"`
 }
-
 
 type updateProgressDetailForm struct {
 	Name string `json:"name"`
@@ -65,7 +57,17 @@ func (c *ProgressDetails) FindOne(ctx *gin.Context) {
 	copier.Copy(&serializedProgressDetail, &progressDetail)
 	ctx.JSON(http.StatusOK, gin.H{"progressdetail": serializedProgressDetail})
 }
+func (c *ProgressDetails) FindOneuser(ctx *gin.Context) {
 
+	var progressDetail []models.ProgressDetail
+	user_id := ctx.Param("id")
+	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
+	c.DB.Order("question_id desc").Find(&progressDetail, "user_id = ?", user_id)
+
+	var serializedProgressesDetail []allProgressDetailResponse
+	copier.Copy(&serializedProgressesDetail, &progressDetail)
+	ctx.JSON(http.StatusOK, gin.H{"progressdetail": serializedProgressesDetail})
+}
 func (c *ProgressDetails) Create(ctx *gin.Context) {
 	var form progressDetailForm
 	if err := ctx.ShouldBindJSON(&form); err != nil {
