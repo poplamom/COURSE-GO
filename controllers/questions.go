@@ -138,7 +138,9 @@ func (c *Questions) CheckAns(ctx *gin.Context) {
 	err := c.DB.Find(&question, "id = ? AND answer = ?", requestBody.ID, requestBody.Answer).Error
 
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"question": "no"})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+
+		// ctx.JSON(http.StatusNotFound, gin.H{"error": "no"})
 		return
 	}
 
