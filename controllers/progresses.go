@@ -34,9 +34,18 @@ type allProgressesResponse struct {
 	ID       uint `json:"id"`
 	UserID   uint `json:"userId"`
 	CourseID uint `json:"courseId"`
+	Course   []struct {
+		ID   uint   `json:"id"`
+		Name string `json:"name"`
+		Desc string `json:"desc"`
+	} `json:"course"`
 }
 
 type createProgressesForm struct {
+	UserID   uint `form:"userId" binding:"required"`
+	CourseID uint `form:"courseId" binding:"required"`
+}
+type oneProgressesForm struct {
 	UserID   uint `form:"userId" binding:"required"`
 	CourseID uint `form:"courseId" binding:"required"`
 }
@@ -78,6 +87,21 @@ func (c *Progresses) FindOneuser(ctx *gin.Context) {
 	var serializedProgresses []allProgressesResponse
 	copier.Copy(&serializedProgresses, &progresses)
 	ctx.JSON(http.StatusOK, gin.H{"progress": serializedProgresses})
+}
+
+func (c *Progresses) FindMyCourse(ctx *gin.Context) {
+
+	var progresses models.Progress
+	user_id := ctx.Param("id")
+	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
+	if err := c.DB.Preload("Course").Order("course_id desc").Find(&progresses, "user_id = ?", user_id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	}
+
+
+	var serializedProgresses allProgressesResponse
+	copier.Copy(&serializedProgresses, &progresses)
+	ctx.JSON(http.StatusOK, gin.H{"progresses": serializedProgresses})
 }
 
 func (c *Progresses) Create(ctx *gin.Context) {
