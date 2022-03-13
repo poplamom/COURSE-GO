@@ -20,24 +20,22 @@ type Users struct {
 type createUserForm struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8"`
-	Avatar 	 string `json:"avatar" binding:"required"`
 	Name     string `json:"name" binding:"required"`
 }
 
 type updateUserForm struct {
 	Email    string `json:"email" binding:"omitempty,email"`
 	Password string `json:"password" binding:"omitempty,min=8"`
-	Avatar 	 string `json:"avatar"`
 	Name     string `json:"name"`
 }
 
 type userResponse struct {
-	ID     uint   `json:"id"`
-	Email  string `json:"email"`
-	Avatar string `json:"avatar"`
-	Name   string `json:"name"`
-	Role   string `json:"role"`
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
+	Role  string `json:"role"`
 }
+
 
 type usersPaging struct {
 	Items  []userResponse `json:"items"`

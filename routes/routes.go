@@ -27,15 +27,16 @@ func Serve(r *gin.Engine) {
 
 	usersController := controllers.Users{DB: db}
 	usersGroup := v1.Group("users")
+	usersGroup.GET("", usersController.FindAll)
+	usersGroup.POST("", usersController.Create)
+	usersGroup.GET("/:id", usersController.FindOne)
+	usersGroup.PATCH("/:id", usersController.Update)
+	usersGroup.DELETE("/:id", usersController.Delete)
+	usersGroup.PATCH("/:id/promote", usersController.Promote)
+	usersGroup.PATCH("/:id/demote", usersController.Demote)
 	usersGroup.Use(authenticate, authorize)
 	{
-		usersGroup.GET("", usersController.FindAll)
-		usersGroup.POST("", usersController.Create)
-		usersGroup.GET("/:id", usersController.FindOne)
-		usersGroup.PATCH("/:id", usersController.Update)
-		usersGroup.DELETE("/:id", usersController.Delete)
-		usersGroup.PATCH("/:id/promote", usersController.Promote)
-		usersGroup.PATCH("/:id/demote", usersController.Demote)
+
 	}
 
 	articleController := controllers.Articles{DB: db}
