@@ -70,6 +70,7 @@ func (c *Tasks) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"tasks": serializedTask})
 }
 
+
 func (c *Tasks) FindOne(ctx *gin.Context) {
 	task, err := c.findTaskByID(ctx)
 	if err != nil {

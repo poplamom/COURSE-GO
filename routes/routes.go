@@ -78,10 +78,16 @@ func Serve(r *gin.Engine) {
 	// progressGroup.GET("", ProgressController.FindAll)
 	progressDetailGroup.GET("/:id", ProgressDetailController.FindOneuser)
 
+	progressDetailGroup.POST("/couters", ProgressDetailController.CountQuestion)
+
+	progressDetailGroup.POST("", ProgressDetailController.Create)
+
+	
 	TaskController := controllers.Tasks{DB: db}
 	tasksGroup := v1.Group("/tasks")
 	tasksGroup.GET("", TaskController.FindAll)
 	tasksGroup.GET("/:id", TaskController.FindOne)
+
 	// tasksGroup.Use(authenticate, authorize)
 	{
 		tasksGroup.PATCH("/:id", TaskController.Update)
@@ -106,6 +112,7 @@ func Serve(r *gin.Engine) {
 	questionsGroup.GET("/:id", QuestionController.FindOne)
 	questionsGroup.POST("/CheckAns", QuestionController.CheckAns)
 	questionsGroup.POST("/questionall", QuestionController.FindAllName)
+	questionsGroup.POST("/couters", QuestionController.FindQuestionByCourse)
 
 	// questionsGroup.Use(authenticate, authorize)
 	{

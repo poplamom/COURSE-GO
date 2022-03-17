@@ -98,7 +98,7 @@ func (c *Progresses) FindMyCourse(ctx *gin.Context) {
 	var progresses []models.Progress
 	user_id := ctx.Param("id")
 	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
-	if err := c.DB.Preload("Course").Order("course_id desc").Find(&progresses, "user_id = ?", user_id).Error; err != nil {
+	if err := c.DB.Preload("Course").Order("course_id").Find(&progresses, "user_id = ?", user_id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	}
 

@@ -37,6 +37,16 @@ type updateProgressDetailForm struct {
 	Desc string `json:"desc"`
 }
 
+type responseallQuestion struct {
+	CourseID uint `json:"courseId"`
+	UserID   uint `json:"userId"`
+}
+
+type allQuestions struct {
+	CourseID uint `json:"id"`
+	UserID   uint `json:"userId"`
+}
+
 func (c *ProgressDetails) FindAll(ctx *gin.Context) {
 	var progressDetails []models.ProgressDetail
 	c.DB.Order("id desc").Find(&progressDetails)
@@ -62,11 +72,37 @@ func (c *ProgressDetails) FindOneuser(ctx *gin.Context) {
 	var progressDetail []models.ProgressDetail
 	user_id := ctx.Param("id")
 	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
-	c.DB.Order("question_id desc").Find(&progressDetail, "user_id = ?", user_id)
+	c.DB.Order("question_id").Find(&progressDetail, "user_id = ?", user_id)
 
 	var serializedProgressesDetail []allProgressDetailResponse
 	copier.Copy(&serializedProgressesDetail, &progressDetail)
 	ctx.JSON(http.StatusOK, gin.H{"progressdetail": serializedProgressesDetail})
+}
+
+func (c *ProgressDetails) CountQuestion(ctx *gin.Context) {
+	var progressDetails []models.ProgressDetail
+
+	var requestBodys allQuestions
+	if err := ctx.BindJSON(&requestBodys); err != nil {
+
+	}
+	if err := c.DB.Find(&progressDetails, "course_id = ? AND user_id = ?", requestBodys.CourseID, requestBodys.UserID).Error; err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"counter": 0})
+
+		return
+	}
+
+	var serializedProgressesDetail []responseallQuestion
+	copier.Copy(&serializedProgressesDetail, &progressDetails)
+	if serializedProgressesDetail == nil {
+		ctx.JSON(http.StatusOK, gin.H{"counter": 0})
+		return
+
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"counter": serializedProgressesDetail})
+		return
+	}
+
 }
 func (c *ProgressDetails) Create(ctx *gin.Context) {
 	var form progressDetailForm

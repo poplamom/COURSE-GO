@@ -17,16 +17,19 @@ type ProgressDetailses struct {
 	DB *gorm.DB
 }
 type ProgressDetail struct {
+	CourseID uint
+
 	TaskID     uint
 	QuestionID uint
 	UserID     uint
 }
 
 type QuestionAnser struct {
-	ID     uint   `json:"id"`
-	Answer string `json:"answer"`
-	TaskID uint   `json:"taskId"`
-	UserID uint   `json:"userId"`
+	ID       uint   `json:"id"`
+	Answer   string `json:"answer"`
+	CourseID uint   `json:"courseId"`
+	TaskID   uint   `json:"taskId"`
+	UserID   uint   `json:"userId"`
 }
 type ProgressDetaialCreate struct {
 	TaskID     uint `json:"takId"`
@@ -71,10 +74,11 @@ type allQuestionName struct {
 	Hint string `json:"hint"`
 }
 type createQuestionForm struct {
-	Name   string `form:"name" binding:"required"`
-	Answer string `form:"answer" binding:"required"`
-	Hint   string `form:"hint" binding:"required"`
-	TaskID uint   `form:"taskId" binding:"required"`
+	Name     string `form:"name" binding:"required"`
+	Answer   string `form:"answer" binding:"required"`
+	Hint     string `form:"hint" binding:"required"`
+	CourseID uint   `form:"courseId" binding:"required"`
+	TaskID   uint   `form:"taskId" binding:"required"`
 }
 
 type updateQuestionForm struct {
@@ -94,6 +98,12 @@ type User struct {
 	ID   int64
 	Name string
 	Age  byte
+}
+type allQuestionx struct {
+	CourseID uint `json:"id"`
+}
+type responseallQuestions struct {
+	CourseID uint `json:"courseId"`
 }
 
 func (c *Questions) FindAll(ctx *gin.Context) {
@@ -144,7 +154,7 @@ func (c *Questions) CheckAns(ctx *gin.Context) {
 		return
 	}
 
-	progessDetailTables := ProgressDetail{TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
+	progessDetailTables := ProgressDetail{CourseID: requestBody.CourseID, TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
 	if err := c.DB.Create(&progessDetailTables).Error; err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
@@ -158,7 +168,7 @@ func (cc *ProgressDetailses) createProgressDetail(ctx *gin.Context) {
 	if err := ctx.BindJSON(&requestBody); err != nil {
 		// DO SOMETHING WITH THE ERROR
 	}
-	progressdetail := ProgressDetail{TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
+	progressdetail := ProgressDetail{CourseID: requestBody.CourseID, TaskID: requestBody.TaskID, QuestionID: requestBody.ID, UserID: requestBody.UserID}
 	if err := cc.DB.Create(&progressdetail).Error; err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
@@ -166,6 +176,23 @@ func (cc *ProgressDetailses) createProgressDetail(ctx *gin.Context) {
 	return
 }
 
+func (c *Questions) FindQuestionByCourse(ctx *gin.Context) {
+	var question []models.Question
+	var requestBodys allQuestionx
+	if err := ctx.BindJSON(&requestBodys); err != nil {
+
+	}
+	if err := c.DB.Find(&question, "course_id = ?", requestBodys.CourseID).Error; err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"counter": 0})
+
+		return
+	}
+
+	var serializedQuestion []responseallQuestions
+	copier.Copy(&serializedQuestion, &question)
+
+	ctx.JSON(http.StatusOK, gin.H{"counter": serializedQuestion})
+}
 func (c *Questions) Create(ctx *gin.Context) {
 	var form createQuestionForm
 	if err := ctx.ShouldBind(&form); err != nil {

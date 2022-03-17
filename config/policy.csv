@@ -1,5 +1,6 @@
 p, Admin, /api/v1/users, (GET)|(POST)
 p, Admin, /api/v1/users/*, (GET)|(PATCH)|(DELETE)
+p, Admin, /api/v1/progressesdetail/*, (GET)|(PATCH)|(DELETE)
 p, Admin, /api/v1/categories, (POST)
 p, Admin, /api/v1/categories/*, (PATCH)|(DELETE)
 p, Admin, /api/v1/courses, (POST)

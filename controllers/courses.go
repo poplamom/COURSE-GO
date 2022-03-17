@@ -14,34 +14,26 @@ type Courses struct {
 }
 
 type courseResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Desc     string `json:"desc"`
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+	Desc string `json:"desc"`
 	Task []struct {
-		ID       	uint   `json:"id"`
-		Name     	string `json:"name"`
-		Desc     	string `json:"desc"`
-		Objective 	string `json:"objective"`
-		Status 		string `json:"status"`
-		// Question []struct{
-		// 	ID			uint	`json:"id"`
-		// 	Name		string	`json:"name"`
-		// 	Answer		string	`json:"answer"`
-		// 	Hint		string	`json:"hint"`
-		// 	Status 		string
-		// }
+		ID        uint   `json:"id"`
+		Name      string `json:"name"`
+		Desc      string `json:"desc"`
+		Objective string `json:"objective"`
+		Status    string `json:"status"`
 	} `json:"tasks"`
 }
 
 type courseCreateResponse struct {
-	ID         uint   `json:"id"`
-	Name     string `json:"name"`
-	Desc     string `json:"desc"`
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+	Desc string `json:"desc"`
 }
 
-
 type allCourseResponse struct {
-	ID         uint   `json:"id"`
+	ID   uint   `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }
@@ -58,7 +50,7 @@ type updateCourseForm struct {
 
 func (c *Courses) FindAll(ctx *gin.Context) {
 	var courses []models.Course
-	c.DB.Order("id desc").Find(&courses)
+	c.DB.Order("id").Find(&courses)
 
 	var serializedCourse []allCourseResponse
 	copier.Copy(&serializedCourse, &courses)
@@ -75,7 +67,7 @@ func (c *Courses) FindOne(ctx *gin.Context) {
 	var serializedCourse courseResponse
 	copier.Copy(&serializedCourse, &course)
 	ctx.JSON(http.StatusOK, gin.H{"course": serializedCourse})
-}
+} 	
 
 func (c *Courses) Create(ctx *gin.Context) {
 	var form createCourseForm
@@ -130,7 +122,7 @@ func (c *Courses) Delete(ctx *gin.Context) {
 	ctx.Status(http.StatusNoContent)
 }
 
-func (c *Courses) findCourseByID(ctx *gin.Context) (*models.Course, error)  {
+func (c *Courses) findCourseByID(ctx *gin.Context) (*models.Course, error) {
 	var course models.Course
 	id := ctx.Param("id")
 
@@ -140,4 +132,3 @@ func (c *Courses) findCourseByID(ctx *gin.Context) (*models.Course, error)  {
 
 	return &course, nil
 }
-

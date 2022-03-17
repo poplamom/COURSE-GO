@@ -15,7 +15,7 @@ func Load() {
 	db := config.GetDB()
 
 	// Clean Database
-	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "progresses", "progressdetails", "migrations")
+	db.DropTableIfExists("users", "articles", "categories", "tasks", "questions", "progresses", "progress_details", "migrations")
 	migrations.Migrate()
 
 	// Add Admin
@@ -73,7 +73,7 @@ func Load() {
 	// Add articles
 	log.Info("Creating articles...")
 
-	numOfArticles := 50
+	numOfArticles := 10
 	articles := make([]models.Article, 0, numOfArticles)
 
 	for i := 1; i <= numOfArticles; i++ {
