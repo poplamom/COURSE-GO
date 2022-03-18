@@ -27,6 +27,7 @@ type updateUserForm struct {
 	Email    string `json:"email" binding:"omitempty,email"`
 	Password string `json:"password" binding:"omitempty,min=8"`
 	Name     string `json:"name"`
+	Role     string `json:"role"`
 }
 
 type userResponse struct {
@@ -35,7 +36,6 @@ type userResponse struct {
 	Name  string `json:"name"`
 	Role  string `json:"role"`
 }
-
 
 type usersPaging struct {
 	Items  []userResponse `json:"items"`
