@@ -102,6 +102,9 @@ type User struct {
 type allQuestionx struct {
 	CourseID uint `json:"id"`
 }
+type allQuestion2 struct {
+	CourseID uint `json:"courseId"`
+}
 type responseallQuestions struct {
 	CourseID uint `json:"courseId"`
 }
@@ -178,7 +181,7 @@ func (cc *ProgressDetailses) createProgressDetail(ctx *gin.Context) {
 
 func (c *Questions) FindQuestionByCourse(ctx *gin.Context) {
 	var question []models.Question
-	var requestBodys allQuestionx
+	var requestBodys allQuestion2
 	if err := ctx.BindJSON(&requestBodys); err != nil {
 
 	}

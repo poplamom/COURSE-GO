@@ -41,10 +41,25 @@ type responseallQuestion struct {
 	CourseID uint `json:"courseId"`
 	UserID   uint `json:"userId"`
 }
-
+type responseallQuestionStatic struct {
+	CourseID uint `json:"courseId"`
+	UserID   uint `json:"userId"`
+	User     []struct {
+		ID   uint   `json:"id"`
+		Name string `json:"name"`
+	} `json:"user"`
+}
 type allQuestions struct {
 	CourseID uint `json:"id"`
 	UserID   uint `json:"userId"`
+}
+type allQuestions2 struct {
+	CourseID uint `json:"courseId"`
+	UserID   uint `json:"userId"`
+}
+
+type userId struct {
+	UserID uint `json:"userId"`
 }
 
 func (c *ProgressDetails) FindAll(ctx *gin.Context) {
@@ -102,6 +117,42 @@ func (c *ProgressDetails) CountQuestion(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"counter": serializedProgressesDetail})
 		return
 	}
+}
+
+func (c *ProgressDetails) CountQuestionStatic(ctx *gin.Context) {
+	var progressDetails []models.ProgressDetail
+
+	var requestBodys allQuestions2
+	if err := ctx.BindJSON(&requestBodys); err != nil {
+
+	}
+	if err := c.DB.Preload("User").Find(&progressDetails, "course_id = ? AND user_id = ?", requestBodys.CourseID, requestBodys.UserID).Error; err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"counter": 0})
+
+		return
+	}
+
+	var serializedProgressesDetail []responseallQuestionStatic
+	copier.Copy(&serializedProgressesDetail, &progressDetails)
+	if serializedProgressesDetail == nil {
+		ctx.JSON(http.StatusOK, gin.H{"counter": 0})
+		return
+
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"counter": serializedProgressesDetail})
+		return
+	}
+}
+
+func (c *ProgressDetails) StaticCourse(ctx *gin.Context) {
+	var progressDetail []models.ProgressDetail
+	course_id := ctx.Param("id")
+	// "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a"
+	c.DB.Order("user_id").Find(&progressDetail, "course_id = ?", course_id)
+
+	var serializedProgressesDetail []allProgressDetailResponse
+	copier.Copy(&serializedProgressesDetail, &progressDetail)
+	ctx.JSON(http.StatusOK, gin.H{"progressdetail": serializedProgressesDetail})
 
 }
 func (c *ProgressDetails) Create(ctx *gin.Context) {
