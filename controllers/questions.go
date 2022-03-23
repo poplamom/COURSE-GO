@@ -100,7 +100,7 @@ type User struct {
 	Age  byte
 }
 type allQuestionx struct {
-	CourseID uint `json:"id"`
+	CourseID uint `json:"courseId"`
 }
 type allQuestion2 struct {
 	CourseID uint `json:"courseId"`
