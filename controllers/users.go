@@ -99,17 +99,18 @@ func (u *Users) Update(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
-
 	user, err := u.findUserByID(ctx)
+
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-	
 	if form.Password != "" {
-		form.Password = user.GenerateEncryptedPassword()
+		user.Password = form.Password
+		user.Password = user.GenerateEncryptedPassword()
+		form.Password = user.Password
 	}
-
+	
 	if err := u.DB.Model(&user).Update(&form).Error; err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
@@ -119,6 +120,8 @@ func (u *Users) Update(ctx *gin.Context) {
 	copier.Copy(&serializedUser, &user)
 	ctx.JSON(http.StatusOK, gin.H{"user": serializedUser})
 }
+
+
 
 func (u *Users) Delete(ctx *gin.Context) {
 

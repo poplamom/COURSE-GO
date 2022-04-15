@@ -27,7 +27,7 @@ func Serve(r *gin.Engine) {
 
 	usersController := controllers.Users{DB: db}
 	usersGroup := v1.Group("users")
-	usersGroup.GET("", usersController.FindAll)
+	usersGroup.GET("",  usersController.FindAll)
 	usersGroup.POST("", usersController.Create)
 	usersGroup.GET("/:id", usersController.FindOne)
 	usersGroup.PATCH("/:id", usersController.Update)
@@ -35,40 +35,18 @@ func Serve(r *gin.Engine) {
 	usersGroup.PATCH("/:id/promote", usersController.Promote)
 	usersGroup.PATCH("/:id/demote", usersController.Demote)
 	usersGroup.Use(authenticate, authorize)
-	{
+	{	
 
-	}
-
-	articleController := controllers.Articles{DB: db}
-	articlesGroup := v1.Group("/articles")
-	articlesGroup.GET("", articleController.FindAll)
-	articlesGroup.GET("/:id", articleController.FindOne)
-	articlesGroup.Use(authenticate, authorize)
-	{
-		articlesGroup.PATCH("/:id", articleController.Update)
-		articlesGroup.DELETE("/:id", articleController.Delete)
-		articlesGroup.POST("", authenticate, articleController.Create)
-	}
-
-	CategoryController := controllers.Categories{DB: db}
-	categoriesGroup := v1.Group("/categories")
-	categoriesGroup.GET("", CategoryController.FindAll)
-	categoriesGroup.GET("/:id", CategoryController.FindOne)
-	categoriesGroup.Use(authenticate, authorize)
-	{
-		categoriesGroup.PATCH("/:id", CategoryController.Update)
-		categoriesGroup.DELETE("/:id", CategoryController.Delete)
-		categoriesGroup.POST("", CategoryController.Create)
 	}
 
 	ProgressController := controllers.Progresses{DB: db}
 	progressGroup := v1.Group("/progresses")
 	// progressGroup.GET("", ProgressController.FindAll)
-	progressGroup.GET("/:id", ProgressController.FindOneuser)
-	progressGroup.GET("/mycourse/:id", ProgressController.FindMyCourse)
-	progressGroup.GET("/finduserenroll/:id", ProgressController.FinduserEnroll)
 	// coursesGroup.Use(authenticate, authorize)
 	{
+		progressGroup.GET("/:id", ProgressController.FindOneuser)
+		progressGroup.GET("/mycourse/:id", ProgressController.FindMyCourse)
+		progressGroup.GET("/finduserenroll/:id", ProgressController.FinduserEnroll)
 		progressGroup.POST("", ProgressController.Create)
 	}
 
@@ -109,20 +87,42 @@ func Serve(r *gin.Engine) {
 	questionsGroup.POST("/CheckAns", QuestionController.CheckAns)
 	questionsGroup.POST("/questionall", QuestionController.FindAllName)
 	questionsGroup.POST("/couters", QuestionController.FindQuestionByCourse)
-	// questionsGroup.Use(authenticate, authorize)
+	questionsGroup.Use(authenticate, authorize)
 	{
 		questionsGroup.PATCH("/:id", QuestionController.Update)
 		questionsGroup.DELETE("/:id", QuestionController.Delete)
 		questionsGroup.POST("", QuestionController.Create)
 	}
 
-	dockersGroup := v1.Group("/containers")
-	dockerController := controllers.Dockers{}
-	{
-		dockersGroup.GET("", dockerController.ListAll)
-		dockersGroup.GET("/stop/:id", dockerController.StopContainer)
-		dockersGroup.GET("/start/:id", dockerController.StartContainer)
-	}
+	// articleController := controllers.Articles{DB: db}
+	// articlesGroup := v1.Group("/articles")
+	// articlesGroup.GET("", articleController.FindAll)
+	// articlesGroup.GET("/:id", articleController.FindOne)
+	// articlesGroup.Use(authenticate, authorize)
+	// {
+	// 	articlesGroup.PATCH("/:id", articleController.Update)
+	// 	articlesGroup.DELETE("/:id", articleController.Delete)
+	// 	articlesGroup.POST("", authenticate, articleController.Create)
+	// }
+
+	// CategoryController := controllers.Categories{DB: db}
+	// categoriesGroup := v1.Group("/categories")
+	// categoriesGroup.GET("", CategoryController.FindAll)
+	// categoriesGroup.GET("/:id", CategoryController.FindOne)
+	// categoriesGroup.Use(authenticate, authorize)
+	// {
+	// 	categoriesGroup.PATCH("/:id", CategoryController.Update)
+	// 	categoriesGroup.DELETE("/:id", CategoryController.Delete)
+	// 	categoriesGroup.POST("", CategoryController.Create)
+	// }
+
+	// dockersGroup := v1.Group("/containers")
+	// dockerController := controllers.Dockers{}
+	// {
+	// 	dockersGroup.GET("", dockerController.ListAll)
+	// 	dockersGroup.GET("/stop/:id", dockerController.StopContainer)
+	// 	dockersGroup.GET("/start/:id", dockerController.StartContainer)
+	// }
 
 	{
 		url := ginSwagger.URL("http://localhost:5200/swagger/doc.json") // The url pointing to API definition
