@@ -85,7 +85,6 @@ func (a *Articles) Create(ctx *gin.Context) {
 		return
 	}
 
-	
 	var article models.Article
 	
 	user, _ := ctx.Get("sub")

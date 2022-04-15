@@ -105,9 +105,9 @@ func (u *Users) Update(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-
+	
 	if form.Password != "" {
-		user.Password = user.GenerateEncryptedPassword()
+		form.Password = user.GenerateEncryptedPassword()
 	}
 
 	if err := u.DB.Model(&user).Update(&form).Error; err != nil {

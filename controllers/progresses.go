@@ -50,11 +50,13 @@ type enrollCourse struct {
 		Name string `json:"name"`
 	} `json:"user"`
 }
+
 type myCourse struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }
+
 type createProgressesForm struct {
 	UserID   uint `form:"userId" binding:"required"`
 	CourseID uint `form:"courseId" binding:"required"`
