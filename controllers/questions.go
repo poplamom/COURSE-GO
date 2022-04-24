@@ -18,7 +18,6 @@ type ProgressDetailses struct {
 }
 type ProgressDetail struct {
 	CourseID uint
-
 	TaskID     uint
 	QuestionID uint
 	UserID     uint
@@ -36,6 +35,7 @@ type ProgressDetaialCreate struct {
 	QuestionID uint `json:"questionId"`
 	UserID     uint `json:"userId"`
 }
+
 type questionResponse struct {
 	ID     uint   `json:"id"`
 	Name   string `json:"name"`
@@ -117,14 +117,14 @@ func (c *Questions) FindAll(ctx *gin.Context) {
 	copier.Copy(&serializedQuestion, &questions)
 	ctx.JSON(http.StatusOK, gin.H{"questions": serializedQuestion})
 }
-func (c *Questions) FindAllName(ctx *gin.Context) {
-	var questions []models.Question
-	c.DB.Order("id desc").Find(&questions)
+// func (c *Questions) FindAllName(ctx *gin.Context) {
+// 	var questions []models.Question
+// 	c.DB.Order("id desc").Find(&questions)
 
-	var serializedQuestion []allQuestionName
-	copier.Copy(&serializedQuestion, &questions)
-	ctx.JSON(http.StatusOK, gin.H{"question": serializedQuestion})
-}
+// 	var serializedQuestion []allQuestionName
+// 	copier.Copy(&serializedQuestion, &questions)
+// 	ctx.JSON(http.StatusOK, gin.H{"question": serializedQuestion})
+// }
 
 func (c *Questions) FindOne(ctx *gin.Context) {
 	question, err := c.findQuestionByID(ctx)

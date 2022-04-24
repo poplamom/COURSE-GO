@@ -39,6 +39,7 @@ func Serve(r *gin.Engine) {
 
 	}
 
+	// Store for enroll
 	ProgressController := controllers.Progresses{DB: db}
 	progressGroup := v1.Group("/progresses")
 	// progressGroup.GET("", ProgressController.FindAll)
@@ -50,6 +51,7 @@ func Serve(r *gin.Engine) {
 		progressGroup.POST("", ProgressController.Create)
 	}
 
+	// store user process
 	ProgressDetailController := controllers.ProgressDetails{DB: db}
 	progressDetailGroup := v1.Group("/progressesdetail")
 	// progressGroup.GET("", ProgressController.FindAll)
@@ -85,7 +87,7 @@ func Serve(r *gin.Engine) {
 	questionsGroup.GET("", QuestionController.FindAll)
 	questionsGroup.GET("/:id", QuestionController.FindOne)
 	questionsGroup.POST("/CheckAns", QuestionController.CheckAns)
-	questionsGroup.POST("/questionall", QuestionController.FindAllName)
+	// questionsGroup.POST("/questionall", QuestionController.FindAllName)
 	questionsGroup.POST("/couters", QuestionController.FindQuestionByCourse)
 	questionsGroup.Use(authenticate, authorize)
 	{
@@ -93,6 +95,7 @@ func Serve(r *gin.Engine) {
 		questionsGroup.DELETE("/:id", QuestionController.Delete)
 		questionsGroup.POST("", QuestionController.Create)
 	}
+	
 
 	// articleController := controllers.Articles{DB: db}
 	// articlesGroup := v1.Group("/articles")
