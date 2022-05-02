@@ -17,7 +17,7 @@ type taskResponse struct {
 	ID        uint   `json:"id"`
 	Name      string `json:"name"`
 	Desc      string `json:"desc"`
-	Objective string `json:"objective"`
+	// Objective string `json:"objective"`
 	Status    string `json:"status"`
 	CourseID  uint   `json:"courseId"`
 	Course    struct {
@@ -37,7 +37,7 @@ type taskCreateResponse struct {
 	ID        uint   `json:"id"`
 	Name      string `json:"name"`
 	Desc      string `json:"desc"`
-	Objective string `json:"objective"`
+	// Objective string `json:"objective"`
 	Status    string `json:"status"`
 }
 
@@ -50,14 +50,14 @@ type allTaskResponse struct {
 type createTaskForm struct {
 	Name      string `form:"name" binding:"required"`
 	Desc      string `form:"desc" binding:"required"`
-	Objective string `form:"objective" binding:"required"`
+	// Objective string `form:"objective" binding:"required"`
 	CourseID  uint   `form:"courseId" binding:"required"`
 }
 
 type updateTaskForm struct {
 	Name      string `form:"name"`
 	Desc      string `form:"desc"`
-	Objective string `form:"objective"`
+	// Objective string `form:"objective"`
 	Status    string `form:"status"`
 }
 

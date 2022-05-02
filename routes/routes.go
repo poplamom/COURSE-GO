@@ -89,7 +89,7 @@ func Serve(r *gin.Engine) {
 	questionsGroup.POST("/CheckAns", QuestionController.CheckAns)
 	// questionsGroup.POST("/questionall", QuestionController.FindAllName)
 	questionsGroup.POST("/couters", QuestionController.FindQuestionByCourse)
-	questionsGroup.Use(authenticate, authorize)
+	// questionsGroup.Use(authenticate, authorize)
 	{
 		questionsGroup.PATCH("/:id", QuestionController.Update)
 		questionsGroup.DELETE("/:id", QuestionController.Delete)
