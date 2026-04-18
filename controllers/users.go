@@ -3,10 +3,13 @@ package controllers
 import (
 	"course-go/config"
 	"course-go/models"
+	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -20,14 +23,14 @@ type Users struct {
 type createUserForm struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8"`
-	Avatar 	 string `json:"avatar" binding:"required"`
+	Avatar   string `json:"avatar" binding:"required"`
 	Name     string `json:"name" binding:"required"`
 }
 
 type updateUserForm struct {
 	Email    string `json:"email" binding:"omitempty,email"`
 	Password string `json:"password" binding:"omitempty,min=8"`
-	Avatar 	 string `json:"avatar"`
+	Avatar   string `json:"avatar"`
 	Name     string `json:"name"`
 }
 
@@ -192,7 +195,8 @@ func setUserImage(ctx *gin.Context, user *models.User) error {
 
 	path := "uploads/users/" + strconv.Itoa(int(user.ID))
 	os.MkdirAll(path, os.ModePerm)
-	filename := path + "/" + file.Filename
+	extension := filepath.Ext(filepath.Base(file.Filename))
+	filename := path + "/" + fmt.Sprintf("%d%s", time.Now().UnixNano(), extension)
 	if err := ctx.SaveUploadedFile(file, filename); err != nil {
 		return err
 	}

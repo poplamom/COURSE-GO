@@ -2,11 +2,14 @@ package controllers
 
 import (
 	"course-go/models"
+	"fmt"
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -85,9 +88,8 @@ func (a *Articles) Create(ctx *gin.Context) {
 		return
 	}
 
-	
 	var article models.Article
-	
+
 	user, _ := ctx.Get("sub")
 	copier.Copy(&article, &form)
 	article.User = *user.(*models.User)
@@ -154,7 +156,8 @@ func (a *Articles) setArticleImage(ctx *gin.Context, article *models.Article) er
 
 	path := "uploads/articles/" + strconv.Itoa(int(article.ID))
 	os.MkdirAll(path, 0755)
-	filename := path + "/" + file.Filename
+	extension := filepath.Ext(filepath.Base(file.Filename))
+	filename := path + "/" + fmt.Sprintf("%d%s", time.Now().UnixNano(), extension)
 	if err := ctx.SaveUploadedFile(file, filename); err != nil {
 		return err
 	}

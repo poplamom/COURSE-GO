@@ -19,14 +19,19 @@ type login struct {
 var identityKey = "sub"
 
 func Authenticate() *jwt.GinJWTMiddleware {
+	secretKey := os.Getenv("SECRET_KEY")
+	if secretKey == "" {
+		log.Fatal("JWT Error: SECRET_KEY is not set")
+	}
+
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		// secret key
-		Key: []byte(os.Getenv("SECRET_KEY")),
+		Key: []byte(secretKey),
 
 		IdentityKey: identityKey,
 
 		// looking Token header
-		TokenLookup: "header: Authorization",
+		TokenLookup:   "header: Authorization",
 		TokenHeadName: "Bearer",
 
 		IdentityHandler: func(c *gin.Context) interface{} {
@@ -38,7 +43,7 @@ func Authenticate() *jwt.GinJWTMiddleware {
 			if db.First(&user, uint(id.(float64))).RecordNotFound() {
 				return nil
 			}
-			
+
 			return &user
 		},
 
@@ -68,7 +73,7 @@ func Authenticate() *jwt.GinJWTMiddleware {
 			if v, ok := data.(*models.User); ok {
 				claims := jwt.MapClaims{
 					identityKey: v.ID,
-					"email": v.Email,
+					"email":     v.Email,
 				}
 
 				return claims
